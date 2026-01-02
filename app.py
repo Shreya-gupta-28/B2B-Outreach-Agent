@@ -10,38 +10,36 @@ st.markdown("""
     personalized pitch for recruitment software.
 """)
 
-# --- SIDEBAR FOR SETTINGS ---
-with st.sidebar:
-    st.header("Settings")
-    # This looks for the key in Streamlit's secure cloud settings
+# --- API KEY LOGIC (FIXED INDENTATION) ---
+# 1. First, check if the key is in Streamlit Cloud Secrets
 if "GROQ_KEY" in st.secrets:
     user_api_key = st.secrets["GROQ_KEY"]
 else:
-    # Fallback: if secrets aren't set, show the sidebar input
+    # 2. If not found in Secrets, show the sidebar input as a fallback
     with st.sidebar:
-        user_api_key = st.text_input("Groq API Key", type="password")
+        st.header("Settings")
+        user_api_key = st.text_input("Groq API Key", type="password", help="Enter your key here if not set in Cloud Secrets")
+        if not user_api_key:
+            st.warning("Please enter your Groq API Key to proceed.")
 
 # --- MAIN INTERFACE ---
 company = st.text_input("Target Company Name", placeholder="e.g., NVIDIA, Microsoft, Zomato")
 
 if st.button("Generate Personalized Outreach"):
     if not user_api_key:
-        st.error("❌ Please enter your Groq API Key in the sidebar!")
+        st.error("❌ API Key not found! Please add it to 'Advanced Settings' on Streamlit Cloud or the sidebar.")
     elif not company:
         st.warning("⚠️ Please enter a company name.")
     else:
         with st.spinner(f"🕵️ Agent is researching {company}...."):
             try:
-                # CALL THE ENGINE
+                # The agent uses the key discovered above
                 email_draft = run_outreach_task(company, user_api_key)
                 
                 st.success("✅ Research and Drafting Complete!")
-                
-                # DISPLAY THE RESULT
                 st.subheader(f"Drafted Email for {company}")
                 st.text_area("Final Output:", value=email_draft, height=400)
                 
-                # DOWNLOAD BUTTON
                 st.download_button(
                     label="📥 Download Email (.txt)",
                     data=email_draft,
