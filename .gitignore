@@ -1,0 +1,16 @@
+# Python virtual environment (Too large to upload)
+venv/
+.venv/
+env/
+
+# API Keys and Secrets (Security risk)
+.env
+.streamlit/secrets.toml
+
+# Python cache (Unnecessary clutter)
+__pycache__/
+*.pyc
+
+# Local system files
+.DS_Store
+Thumbs.db
