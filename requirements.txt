@@ -4,5 +4,5 @@ langchain-community
 langchain-groq
 langchain-classic
 duckduckgo-search
+ddgs
 langgraph
-duckduckgo-search
