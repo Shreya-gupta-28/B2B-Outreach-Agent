@@ -5,4 +5,3 @@ langchain-groq
 langchain-classic
 duckduckgo-search
 langgraph
-pip install -U ddgs
