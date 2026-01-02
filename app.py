@@ -2,7 +2,7 @@ import streamlit as st
 from outreach_agent import run_outreach_task
 
 # --- WEB PAGE CONFIGURATION ---
-st.set_page_config(page_title="AI Sales Agent", page_icon="🤖", layout="centered")
+st.set_page_config(page_title="AI Agent", page_icon="🤖", layout="centered")
 
 st.title("🤖 B2B Outreach Automation")
 st.markdown("""
