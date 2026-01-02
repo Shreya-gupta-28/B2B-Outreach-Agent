@@ -4,7 +4,7 @@ from langchain_groq import ChatGroq
 from langchain_classic import hub
 from langchain_classic.agents import create_react_agent, AgentExecutor
 
-def run_outreach_task(company_name, api_key):
+def run_outreach_task(company_name, user_goal, api_key):
     """
     This function takes a company name and API key, 
     researches the company, and returns a drafted email.
@@ -31,11 +31,16 @@ def run_outreach_task(company_name, api_key):
     agent = create_react_agent(llm, [search_tool], prompt)
     agent_executor = AgentExecutor(agent=agent, tools=[search_tool], verbose=True)
 
-    # 5. Define the specific task
-    task = f"Find out what {company_name} is currently hiring for and write a short, professional email to their HR manager proposing a new recruitment software."
+    # DYNAMIC INSTRUCTION: We combine the company and the specific goal
+    # This replaces the hardcoded recruitment text.
+    instructions = (
+        f"Research the company '{company_name}'. "
+        f"Based on your research, write a professional B2B outreach email with this goal: {user_goal}. "
+        "Do NOT mention recruitment software unless it is part of the goal."
+    )
 
     # 6. Execute and return the result
-    result = agent_executor.invoke({"input": task})
+    result = agent_executor.invoke({"input": instructions})
     return result["output"]
 
 # This allows you to still test this file alone by running 'python outreach_agent.py'
